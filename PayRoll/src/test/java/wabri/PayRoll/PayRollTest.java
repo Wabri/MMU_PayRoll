@@ -8,10 +8,12 @@ import org.junit.Test;
 public class PayRollTest {
 
 	private PayRoll payRoll;
+	
+	private EmployeeDB employeeDB;
 
 	@Before
 	public void init () {
-		payRoll = new PayRoll();
+		payRoll = new PayRoll(employeeDB);
 	}
 	
 	@Test
