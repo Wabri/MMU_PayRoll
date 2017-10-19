@@ -15,9 +15,15 @@ public class PayRollTest {
 	
 	private EmployeeDB employeeDB;
 
+	private List<Employee> employees;
+
 	@Before
 	public void init () {
 		employeeDB = mock(EmployeeDB.class);
+		employees = new ArrayList<Employee>();
+		
+		when(employeeDB.getAllEmployees()).thenReturn(employees);
+
 		payRoll = new PayRoll(employeeDB);
 	}
 	
@@ -28,10 +34,7 @@ public class PayRollTest {
 	
 	@Test
 	public void testSingleEmployeed() {
-		List<Employee> employees = new ArrayList<Employee>();
 		employees.add(new Employee());
-		
-		when(employeeDB.getAllEmployees()).thenReturn(employees);
 		
 		assertNumberOfPayments(1);
 	}
