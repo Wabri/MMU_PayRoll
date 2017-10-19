@@ -3,6 +3,9 @@ package wabri.PayRoll;
 import static org.junit.Assert.assertEquals;
 import static org.mockito.Mockito.*;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import org.junit.Before;
 import org.junit.Test;
 
@@ -21,6 +24,16 @@ public class PayRollTest {
 	@Test
 	public void testNoEmployees() {
 		assertNumberOfPayments(0);
+	}
+	
+	@Test
+	public void testSingleEmployeed() {
+		List<Employee> employees = new ArrayList<Employee>();
+		employees.add(new Employee());
+		
+		when(employeeDB.getAllEmployees()).thenReturn(employees);
+		
+		assertNumberOfPayments(1);
 	}
 
 	private void assertNumberOfPayments(int expected) {
