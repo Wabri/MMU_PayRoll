@@ -1,6 +1,7 @@
 package wabri.PayRoll;
 
 import static org.junit.Assert.assertEquals;
+import static org.mockito.Mockito.*;
 
 import org.junit.Before;
 import org.junit.Test;
@@ -13,11 +14,12 @@ public class PayRollTest {
 
 	@Before
 	public void init () {
+		employeeDB = mock(EmployeeDB.class);
 		payRoll = new PayRoll(employeeDB);
 	}
 	
 	@Test
-	public void test() {
+	public void testNoEmployees() {
 		assertNumberOfPayments(0);
 	}
 
