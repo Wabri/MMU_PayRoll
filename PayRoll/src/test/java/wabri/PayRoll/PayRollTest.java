@@ -69,6 +69,20 @@ public class PayRollTest {
 		assertEquals(200, salaryCaptor.getAllValues().get(0).intValue());
 		assertEquals(400, salaryCaptor.getAllValues().get(1).intValue());
 	}
+	
+	@Test
+	public void testEmployeePaidIsUpdate() {
+		String employeeId = "ID1";
+		int salary = 1000;
+		
+		Employee testEmployee = spy(createTestEmployee("Test Employee", employeeId, salary));
+		employees.add(testEmployee);
+		
+		assertNumberOfPayments(1);
+		
+		verify(bankService, times(1)).makePayment(employeeId, salary);
+		verify(testEmployee).setPaid(true);
+	}
 
 	private void assertNumberOfPayments(int expected) {
 		int numberOfPayment = payRoll.monthlyPayment();
