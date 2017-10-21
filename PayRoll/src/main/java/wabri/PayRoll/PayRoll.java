@@ -17,7 +17,13 @@ public class PayRoll {
 		List<Employee> employees = employeeDB.getAllEmployees();
 
 		for (Employee employee : employees) {
-			bankService.makePayment(employee.getBankId(), employee.getSalary());			
+			try {
+				bankService.makePayment(employee.getBankId(), employee.getSalary());
+				employee.setPaid(true);
+			} catch (RuntimeException re) {
+				System.err.println("Exception when paying " + employee.getName());
+				employee.setPaid(false);
+			}
 		}
 
 		return employees.size();
