@@ -9,6 +9,7 @@ import java.util.List;
 import org.junit.Before;
 import org.junit.Test;
 import org.mockito.ArgumentCaptor;
+import org.mockito.InOrder;
 
 public class PayRollTest {
 
@@ -68,6 +69,20 @@ public class PayRollTest {
 		assertEquals("ID2", idCaptor.getAllValues().get(1));
 		assertEquals(200, salaryCaptor.getAllValues().get(0).intValue());
 		assertEquals(400, salaryCaptor.getAllValues().get(1).intValue());
+	}
+	
+	@Test
+	public void testInteractionOrder() {
+		String employeeId = "ID1";
+		int salary = 1000;
+		
+		employees.add(createTestEmployee("Test Employee", employeeId, salary));
+		
+		assertNumberOfPayments(1);
+		
+		InOrder inOrder = inOrder(employeeDB, bankService);
+		inOrder.verify(employeeDB).getAllEmployees();
+		inOrder.verify(bankService).makePayment(employeeId, salary);
 	}
 
 	private void assertNumberOfPayments(int expected) {
