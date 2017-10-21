@@ -38,6 +38,12 @@ public class PayRollTest {
 		
 		assertNumberOfPayments(1);
 	}
+	
+	@Test
+	public void testOnlyOneInteractionWithDB () {
+		payRoll.monthlyPayment();
+		verify(employeeDB).getAllEmployees();
+	}
 
 	private void assertNumberOfPayments(int expected) {
 		int numberOfPayment = payRoll.monthlyPayment();
