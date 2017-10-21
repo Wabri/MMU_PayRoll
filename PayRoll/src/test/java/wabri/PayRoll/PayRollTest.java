@@ -10,12 +10,13 @@ import org.junit.Before;
 import org.junit.Test;
 import org.mockito.ArgumentCaptor;
 import org.mockito.InOrder;
+import org.mockito.InjectMocks;
 import org.mockito.MockitoAnnotations;
 import org.mockito.MockitoAnnotations.Mock;
 
 public class PayRollTest {
-
-	private PayRoll payRoll;
+	
+	@InjectMocks private PayRoll payRoll;
 	@Mock private EmployeeDB employeeDB;
 	@Mock private BankService bankService;
 	private List<Employee> employees;
@@ -26,8 +27,6 @@ public class PayRollTest {
 		MockitoAnnotations.initMocks(this);
 		
 		when(employeeDB.getAllEmployees()).thenReturn(employees);
-
-		payRoll = new PayRoll(employeeDB, bankService);
 	}
 
 	@Test
