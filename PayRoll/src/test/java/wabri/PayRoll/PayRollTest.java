@@ -30,14 +30,14 @@ public class PayRollTest {
 
 	@Test
 	public void testNoEmployees() {
-		assertNumberOfPayments(0);
+		assertNumberOfProcessedEmployees(0);
 	}
 
 	@Test
 	public void testSingleEmployeed() {
 		employees.add(createTestEmployee("Test Employee", "ID1", 1000));
 
-		assertNumberOfPayments(1);
+		assertNumberOfProcessedEmployees(1);
 	}
 
 	@Test
@@ -47,44 +47,59 @@ public class PayRollTest {
 
 		employees.add(createTestEmployee("Test Employee", "ID1", 1000));
 
-		assertNumberOfPayments(1);
+		assertNumberOfProcessedEmployees(1);
 
 		verify(bankService, times(1)).makePayment(employeeID, salary);
 	}
-	
+
 	@Test
-	public void testAllEmployeesArePaid () {
+	public void testAllEmployeesArePaid() {
 		employees.add(createTestEmployee("employee1", "ID1", 200));
 		employees.add(createTestEmployee("employee2", "ID2", 400));
-		
-		assertNumberOfPayments(2);
-		
+
+		assertNumberOfProcessedEmployees(2);
+
 		ArgumentCaptor<String> idCaptor = ArgumentCaptor.forClass(String.class);
 		ArgumentCaptor<Integer> salaryCaptor = ArgumentCaptor.forClass(Integer.class);
-		
-		verify(bankService,times(2)).makePayment(idCaptor.capture(), salaryCaptor.capture());
-		
+
+		verify(bankService, times(2)).makePayment(idCaptor.capture(), salaryCaptor.capture());
+
 		assertEquals("ID1", idCaptor.getAllValues().get(0));
 		assertEquals("ID2", idCaptor.getAllValues().get(1));
 		assertEquals(200, salaryCaptor.getAllValues().get(0).intValue());
 		assertEquals(400, salaryCaptor.getAllValues().get(1).intValue());
 	}
-	
+
 	@Test
 	public void testEmployeePaidIsUpdate() {
 		String employeeId = "ID1";
 		int salary = 1000;
-		
+
 		Employee testEmployee = spy(createTestEmployee("Test Employee", employeeId, salary));
 		employees.add(testEmployee);
-		
-		assertNumberOfPayments(1);
-		
+
+		assertNumberOfProcessedEmployees(1);
+
 		verify(bankService, times(1)).makePayment(employeeId, salary);
 		verify(testEmployee).setPaid(true);
 	}
 
-	private void assertNumberOfPayments(int expected) {
+	@Test
+	public void testEmployeeIsNotPaidWhenBankThrowsException() {
+		String employeeID = "ID1";
+		int salary = 1000;
+		Employee testEmployee = spy(createTestEmployee("Test Employee", employeeID, salary));
+		employees.add(testEmployee);
+
+		doThrow(new RuntimeException()).when(bankService).makePayment(anyString(), anyInt());
+
+		assertNumberOfProcessedEmployees(1);
+		
+		verify(bankService, times(1)).makePayment(employeeID, salary);
+		verify(testEmployee, times(1)).setPaid(false);
+	}
+
+	private void assertNumberOfProcessedEmployees(int expected) {
 		int numberOfPayment = payRoll.monthlyPayment();
 		assertEquals(expected, numberOfPayment);
 	}
