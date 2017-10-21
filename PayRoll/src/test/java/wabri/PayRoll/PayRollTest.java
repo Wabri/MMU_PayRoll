@@ -8,13 +8,11 @@ import java.util.List;
 
 import org.junit.Before;
 import org.junit.Test;
-import org.junit.runner.RunWith;
 import org.mockito.ArgumentCaptor;
 import org.mockito.InOrder;
+import org.mockito.MockitoAnnotations;
 import org.mockito.MockitoAnnotations.Mock;
-import org.mockito.runners.MockitoJUnitRunner;
 
-@RunWith(MockitoJUnitRunner.class)
 public class PayRollTest {
 
 	private PayRoll payRoll;
@@ -25,7 +23,8 @@ public class PayRollTest {
 	@Before
 	public void init() {
 		employees = new ArrayList<Employee>();
-
+		MockitoAnnotations.initMocks(this);
+		
 		when(employeeDB.getAllEmployees()).thenReturn(employees);
 
 		payRoll = new PayRoll(employeeDB, bankService);
