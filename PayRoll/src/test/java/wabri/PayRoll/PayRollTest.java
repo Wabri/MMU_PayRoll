@@ -12,7 +12,6 @@ import org.mockito.ArgumentCaptor;
 import org.mockito.InOrder;
 
 public class PayRollTest {
-
 	private PayRoll payRoll;
 	private EmployeeDB employeeDB;
 	private BankService bankService;
@@ -20,12 +19,12 @@ public class PayRollTest {
 
 	@Before
 	public void init() {
+		employees = new ArrayList<Employee>();
 		employeeDB = mock(EmployeeDB.class);
 		bankService = mock(BankService.class);
-		employees = new ArrayList<Employee>();
-
+		
 		when(employeeDB.getAllEmployees()).thenReturn(employees);
-
+		
 		payRoll = new PayRoll(employeeDB, bankService);
 	}
 
@@ -78,7 +77,7 @@ public class PayRollTest {
 		
 		employees.add(createTestEmployee("Test Employee", employeeId, salary));
 		
-		assertNumberOfPayments(1);
+		assertNumberOfProcessedEmployees(1);
 		
 		InOrder inOrder = inOrder(employeeDB, bankService);
 		inOrder.verify(employeeDB).getAllEmployees();
