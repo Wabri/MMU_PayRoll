@@ -78,7 +78,7 @@ public class PayRollTest {
 		
 		employees.add(createTestEmployee("Test Employee", employeeId, salary));
 		
-		assertNumberOfPayments(1);
+		assertNumberOfProcessedEmployees(1);
 		
 		InOrder inOrder = inOrder(employeeDB, bankService);
 		inOrder.verify(employeeDB).getAllEmployees();
