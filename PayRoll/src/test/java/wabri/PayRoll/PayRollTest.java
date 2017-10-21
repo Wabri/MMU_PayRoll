@@ -94,9 +94,25 @@ public class PayRollTest {
 		doThrow(new RuntimeException()).when(bankService).makePayment(anyString(), anyInt());
 
 		assertNumberOfProcessedEmployees(1);
-		
+
 		verify(bankService, times(1)).makePayment(employeeID, salary);
 		verify(testEmployee, times(1)).setPaid(false);
+	}
+
+	@Test
+	public void testOtherEmployeesArePaidInCaseOfASingleException() {
+		Employee firstEmployee = spy(createTestEmployee("Test Employee1", "ID1", 100));
+		employees.add(firstEmployee);
+		Employee secondEmployee = spy(createTestEmployee("Test Employee2", "ID2", 200));
+		employees.add(secondEmployee);
+
+		doThrow(new RuntimeException()).doNothing().when(bankService).makePayment(anyString(), anyInt());
+		
+		assertNumberOfProcessedEmployees(2);
+		
+		verify(bankService,times(2)).makePayment(anyString(), anyInt());
+		verify(firstEmployee, times(1)).setPaid(false);
+		verify(secondEmployee, times(1)).setPaid(true);
 	}
 
 	private void assertNumberOfProcessedEmployees(int expected) {
