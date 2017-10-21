@@ -8,20 +8,22 @@ import java.util.List;
 
 import org.junit.Before;
 import org.junit.Test;
+import org.junit.runner.RunWith;
 import org.mockito.ArgumentCaptor;
 import org.mockito.InOrder;
+import org.mockito.MockitoAnnotations.Mock;
+import org.mockito.runners.MockitoJUnitRunner;
 
+@RunWith(MockitoJUnitRunner.class)
 public class PayRollTest {
 
 	private PayRoll payRoll;
-	private EmployeeDB employeeDB;
-	private BankService bankService;
+	@Mock private EmployeeDB employeeDB;
+	@Mock private BankService bankService;
 	private List<Employee> employees;
 
 	@Before
 	public void init() {
-		employeeDB = mock(EmployeeDB.class);
-		bankService = mock(BankService.class);
 		employees = new ArrayList<Employee>();
 
 		when(employeeDB.getAllEmployees()).thenReturn(employees);
