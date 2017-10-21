@@ -21,7 +21,6 @@ public class PayRoll {
 				bankService.makePayment(employee.getBankId(), employee.getSalary());
 				employee.setPaid(true);
 			} catch (RuntimeException re) {
-				System.err.println("Exception when paying " + employee.getName());
 				employee.setPaid(false);
 			}
 		}
