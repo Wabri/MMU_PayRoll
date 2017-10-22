@@ -32,9 +32,5 @@ public class PayRoll {
 
 		return employees.size();
 	}
-	
-	public static void main(String[] args) {
-		
-	}
 
 }
