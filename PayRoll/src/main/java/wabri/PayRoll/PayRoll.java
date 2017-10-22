@@ -2,7 +2,11 @@ package wabri.PayRoll;
 
 import java.util.List;
 
+import org.apache.log4j.Logger;
+
 public class PayRoll {
+
+	final static Logger LOGGER = Logger.getLogger(PayRoll.class);
 
 	private EmployeeDB employeeDB;
 	private BankService bankService;
@@ -21,11 +25,16 @@ public class PayRoll {
 				bankService.makePayment(employee.getBankId(), employee.getSalary());
 				employee.setPaid(true);
 			} catch (RuntimeException re) {
+				LOGGER.error("Bank can not pay employee: " + employee.getName());
 				employee.setPaid(false);
 			}
 		}
 
 		return employees.size();
+	}
+	
+	public static void main(String[] args) {
+		
 	}
 
 }
